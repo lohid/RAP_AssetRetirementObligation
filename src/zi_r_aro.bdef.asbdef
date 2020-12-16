@@ -1,0 +1,114 @@
+unmanaged implementation in class zbp_i_r_aro unique;
+
+define behavior for zi_r_aro alias aro
+//late numbering
+lock master
+etag master LastchangeDate
+{
+  create;
+  update;
+  delete;
+  association _assignments { create; }
+  association _aro_ap { create; }
+
+//field ( readonly )  OblNum;
+field ( mandatory ) CompCode,OblType,OblDesc,AroDateBeg;
+
+mapping for zgs_aro_main
+{
+
+AroAssetclass = aro_assetclass;
+AroDateBeg = aro_date_beg;
+AroDateEnd = aro_date_end;
+AroIntCalMeth = aro_int_cal_meth;
+CompCode = comp_code;
+Currency = currency ;
+InfRateKey = inf_rate_key ;
+IntRateKey = int_rate_key ;
+Langu  = langu ;
+LastchangeDate = lastchange_date;
+OblDesc = obl_desc ;
+OblGuid = obl_guid;
+OblLock = obl_lock ;
+OblMcoDesc = obl_mco_desc;
+OblNum = obl_num;
+OblShortDesc = obl_short_desc;
+OblStatus = obl_status;
+OblType = obl_type;
+
+}
+
+}
+
+define behavior for zi_aro_assignments alias assignment
+//late numbering
+//lock dependent by <association>
+//etag master <field_name>
+{
+//  create;
+  update;
+  delete;
+
+//  field ( readonly ) ObjUuid;
+  field ( mandatory ) Costcenter;
+
+mapping for aro_assignments
+{
+Acttype = acttype;
+BusArea = bus_area;
+CompCode = comp_code;
+Costcenter = costcenter;
+Createdby = createdby;
+Createdtmps = createdtmps;
+ExternalId = external_id;
+FuncArea = func_area;
+Lastchgdby = lastchgdby;
+Lastchgdtmps = lastchgdtmps;
+Location = location;
+ObjType = obj_type;
+ObjUuid = obj_uuid;
+Orderid = orderid;
+Plant = plant;
+ProfSegm = prof_segm;
+ProfitCtr = profit_ctr;
+RespCostcenter = resp_costcenter;
+RlEstKey = rl_est_key;
+Room = room;
+Segment = segment;
+SourceObject = source_object;
+Taxjurcode = taxjurcode;
+Validfrom = validfrom;
+Validto = validto;
+WbsElem = wbs_elem;
+}
+
+}
+
+define behavior for zi_aro_hdr_ap alias aro_ap
+//late numbering
+//lock dependent by <association>
+//etag master <field_name>
+{
+//  create;
+  update;
+  delete;
+
+//  field ( readonly ) ApGuid,AroGuid;
+  field ( mandatory ) AccPr;
+
+mapping for aro_hdr_ap
+{
+AccPr = acc_pr;
+ApGuid = ap_guid;
+AroAssetEnd = aro_asset_end;
+AroAssetMon = aro_asset_mon;
+AroAssetYrs = aro_asset_yrs;
+AroCalcMet = aro_calc_met;
+AroGuid = aro_guid;
+AroProvCarryf = aro_prov_carryf;
+Currency = currency;
+InfRateKey = inf_rate_key;
+IntRateKey = int_rate_key;
+}
+
+}

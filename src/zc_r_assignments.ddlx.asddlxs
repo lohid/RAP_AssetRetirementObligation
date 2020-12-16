@@ -1,0 +1,64 @@
+@Metadata.layer: #CORE
+annotate view zc_r_assignments with
+{
+  @UI.facet: [ { id:            'Assignments',
+                 purpose:       #STANDARD,
+                 type:          #IDENTIFICATION_REFERENCE,
+                 label:         'Assignments',
+                 position:      10 } ]
+  @UI.hidden: true
+  ObjUuid;
+    @UI: { lineItem:        [ { position: 80 } ],
+  identification:  [ { position: 80 } ]  }
+  Validto;
+  @UI.hidden: true
+  Validfrom;
+  @UI.hidden: true
+  SourceObject;
+  @UI.hidden: true
+  ObjType;
+  @UI.hidden: true
+  CompCode;
+  @UI: { lineItem:        [ { position: 10 } ],
+  identification:  [ { position: 10 } ]  }
+  BusArea;
+  @UI: { lineItem:        [ { position: 20 } ],
+  identification:  [ { position: 20 } ]  }
+  Costcenter;
+  @UI.hidden: true
+  RespCostcenter;
+  @UI.hidden: true
+  Orderid;
+  @UI: { lineItem:        [ { position: 30 } ],
+  identification:  [ { position: 30 } ]  }
+  WbsElem;
+  @UI.hidden: true
+  Acttype;
+  @UI: { lineItem:        [ { position: 40 } ],
+  identification:  [ { position: 40 } ]  }
+  Plant;
+  @UI: { lineItem:        [ { position: 50 } ],
+  identification:  [ { position: 50 } ]  }
+  Location;
+  @UI.hidden: true
+  Room;
+  @UI: { lineItem:        [ { position: 60 } ],
+  identification:  [ { position: 60 } ]  }
+  FuncArea;
+  @UI.hidden: true
+  Segment;
+  @UI: { lineItem:        [ { position: 70 } ],
+  identification:  [ { position: 70 } ]  }
+  ProfitCtr;
+  @UI.hidden: true
+  Createdtmps;
+  @UI.hidden: true
+  Createdby;
+  @UI.hidden: true
+  Lastchgdtmps;
+  @UI.hidden: true
+  Lastchgdby;
+  /* Associations */
+  //    _ARO;
+
+}

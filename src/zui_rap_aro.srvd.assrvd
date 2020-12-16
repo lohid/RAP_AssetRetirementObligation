@@ -1,0 +1,5 @@
+@EndUserText.label: 'aro'
+define service ZUI_RAP_ARO {
+  expose zc_rap_aro as Aro;
+  expose zc_rap_transaction as Transaction;
+}

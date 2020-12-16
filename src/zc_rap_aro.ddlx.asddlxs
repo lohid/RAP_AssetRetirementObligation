@@ -1,0 +1,63 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: 'ARO',
+    typeNamePlural: 'AROS',
+    title: {
+      type: #STANDARD,
+      label: 'ARO',
+      value: 'OblGuid'
+    }
+  },
+  presentationVariant: [ { sortOrder: [ { by:         'OblGuid',
+                                          direction:  #DESC }] }]
+                                          }
+annotate view zc_rap_aro with
+{
+
+  @UI.facet: [ { id:            'ARO',
+                 purpose:       #STANDARD,
+                 type:          #IDENTIFICATION_REFERENCE,
+                 label:         'ARO',
+                 position:      10 },
+               { id:            'Transaction',
+                 purpose:       #STANDARD,
+                 type:          #LINEITEM_REFERENCE,
+                 label:         'Transaction',
+                 position:      20,
+                 targetElement: '_Transaction'}]
+
+  @UI: { lineItem:        [ { position: 10 } ],
+         identification:  [ { position: 10 } ]  }
+OblGuid;
+  @UI: { lineItem:        [ { position: 20 } ],
+         identification:  [ { position: 20 } ]  }
+OblType;
+  @UI: { lineItem:        [ { position: 30 } ],
+         identification:  [ { position: 30 } ]  }
+CompCode;
+  @UI: { lineItem:        [ { position: 40 } ],
+         identification:  [ { position: 40 } ]  }
+OblNum;
+  @UI: { lineItem:        [ { position: 50 } ],
+         identification:  [ { position: 50 } ]  }
+OblDesc;
+  @UI: { lineItem:        [ { position: 60 } ],
+         identification:  [ { position: 60 } ]  }
+OblShortDesc;
+  @UI: { lineItem:        [ { position: 70 } ],
+         identification:  [ { position: 70 } ]  }
+OblStatus;
+  @UI: { lineItem:        [ { position: 80 } ],
+         identification:  [ { position: 80 } ]  }
+Langu;
+ @UI.hidden: true
+OblLock;
+ @UI.hidden: true
+OblMcoDesc;
+  @UI: { lineItem:        [ { position: 90 } ],
+         identification:  [ { position: 90 } ]  }
+LastchangeDate;
+/* Associations */
+
+}

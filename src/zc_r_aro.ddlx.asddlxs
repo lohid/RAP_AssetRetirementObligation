@@ -1,0 +1,92 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: 'ARO',
+    typeNamePlural: 'AROS',
+    title: {
+      type: #STANDARD,
+      label: 'ARO',
+      value: 'OblNum'
+    }
+  },
+  presentationVariant: [ { sortOrder: [ { by:         'OblNum',
+                                          direction:  #DESC }] }]
+                                          }
+annotate view zc_r_aro with
+{
+
+  @UI.facet: [ { id:            'ARO',
+                 purpose:       #STANDARD,
+                 type:          #IDENTIFICATION_REFERENCE,
+                 label:         'ARO',
+                 position:      10 },
+               { id:            'Accounting',
+                 purpose:       #STANDARD,
+                 type:          #LINEITEM_REFERENCE,
+                 label:         'Accounting',
+                 position:      20,
+                 targetElement: '_aro_ap'},
+              {  id:            'Assignmets',
+                 purpose:       #STANDARD,
+                 type:          #LINEITEM_REFERENCE,
+                 label:         'Assignmets',
+                 position:      30,
+                 targetElement: '_assignments'  } ]
+
+  @UI.hidden: true
+  OblGuid;
+  @UI: { lineItem:        [ { position: 30 } ],
+       identification:  [ { position: 30 } ]  }
+  OblType;
+  @UI: { lineItem:        [ { position: 20 } ],
+       identification:  [ { position: 20 } ]  }
+  CompCode;
+  @UI: { lineItem:        [ { position: 10 } ],
+       identification:  [ { position: 10 } ]  }
+  OblNum;
+  @UI: { lineItem:        [ { position: 40 } ],
+       identification:  [ { position: 40 } ]  }
+  OblDesc;
+  @UI.hidden: true
+  OblShortDesc;
+  @UI: { lineItem:        [ { position: 50 } ],
+       identification:  [ { position: 50 } ]  }
+  OblStatus;
+ @UI.hidden: true
+  Langu;
+  @UI.hidden: true
+  OblLock;
+  @UI.hidden: true
+  OblMcoDesc;
+  @UI: { lineItem:        [ { position: 60 } ],
+         identification:  [ { position: 60 } ]  }
+  AroDateBeg;
+  @UI.hidden: true
+  AroDateEnd;
+ @UI.hidden: true
+  InfRate;
+ @UI.hidden: true
+  IntRate;
+  @UI: { lineItem:        [ { position: 70 } ],
+       identification:  [ { position: 70 } ]  }
+  Currency;
+  @UI: { lineItem:        [ { position: 80 } ],
+       identification:  [ { position: 80 } ]  }
+  AroAssetclass;
+ @UI.hidden: true
+  CalMeth;
+  @UI.hidden: true
+  CreationUser;
+  @UI.hidden: true
+  CreationDate;
+  @UI.hidden: true
+  LastchangeUser;
+  @UI.hidden: true
+  LastchangeDate;
+  /* Associations */
+  //  _aro_ap;
+  //  _aro_hdr;
+  //  _aro_index;
+  //  _assignments;
+
+}

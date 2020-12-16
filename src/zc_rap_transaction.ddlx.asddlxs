@@ -1,0 +1,60 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: 'Transaction',
+    typeNamePlural: 'Transactions',
+    title: {
+      type: #STANDARD,
+      label: 'Transaction',
+      value: 'AroTaNum'
+    }
+  }
+}
+annotate view zc_rap_transaction with
+{
+  @UI.facet: [ { id:            'Transaction',
+                 purpose:       #STANDARD,
+                 type:          #IDENTIFICATION_REFERENCE,
+                 label:         'Transaction',
+                 position:      10 } ]
+
+  @UI.hidden: true
+  AroGuid;
+
+  @UI: { lineItem:        [ { position: 10 } ],
+     identification:  [ { position: 10 } ]  }
+  AroTaNum;
+  @UI: { lineItem:        [ { position: 20 } ],
+     identification:  [ { position: 20 } ]  }
+  TaType;
+  @UI: { lineItem:        [ { position: 30 } ],
+     identification:  [ { position: 30 } ]  }
+  TaStatus;
+  @UI: { lineItem:        [ { position: 40 } ],
+     identification:  [ { position: 40 } ]  }
+  TaDate;
+  @UI: { lineItem:        [ { position: 50 } ],
+     identification:  [ { position: 50 } ]  }
+  TaProcKeydate;
+  @UI: { lineItem:        [ { position: 60 } ],
+     identification:  [ { position: 60 } ]  }
+  TaDesc;
+  //    TaRetroCalc;
+  //    TaOrigin;
+  //    AroAssetRetpct;
+  //    CepGuid;
+  //    CepGuidAro;
+  //    Status;
+  //    ReleasedBy;
+  //    ReleaseDate;
+  //    ReleaseTime;
+  //    ReversedBy;
+  //    ReverseDate;
+  //    ReverseTime;
+  //    EnteredBy;
+  //    EntryDate;
+  //    EntryTime;
+  //    /* Associations */
+  //    _ARO;
+
+}

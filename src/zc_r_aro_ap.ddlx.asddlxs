@@ -1,0 +1,39 @@
+@Metadata.layer: #CORE
+annotate view zc_r_aro_ap with
+{
+  @UI.facet: [ { id:            'Accounting',
+                 purpose:       #STANDARD,
+                 type:          #IDENTIFICATION_REFERENCE,
+                 label:         'Accounting',
+                 position:      10 } ]
+  @UI.hidden: true
+  ApGuid;
+  @UI.hidden: true
+  AroGuid;
+  @UI: { lineItem:        [ { position: 10 } ],
+  identification:  [ { position: 10 } ]  }
+  AccPr;
+  @UI.hidden: true
+  InfRateKey;
+  @UI.hidden: true
+  IntRateKey;
+  @UI: { lineItem:        [ { position: 20 } ],
+  identification:  [ { position: 20 } ]  }
+  AroAssetYrs;
+  @UI: { lineItem:        [ { position: 30 } ],
+  identification:  [ { position: 30 } ]  }
+  AroAssetMon;
+  @UI: { lineItem:        [ { position: 40 } ],
+  identification:  [ { position: 40 } ]  }
+  AroAssetEnd;
+  @UI: { lineItem:        [ { position: 50 } ],
+  identification:  [ { position: 50 } ]  }
+  AroCalcMet;
+  //    AroProvCarryf;
+  @UI: { lineItem:        [ { position: 60 } ],
+  identification:  [ { position: 60 } ]  }
+  Currency;
+  /* Associations */
+  //    _ARO;
+
+}

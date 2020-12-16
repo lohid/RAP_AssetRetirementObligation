@@ -1,0 +1,49 @@
+unmanaged ;
+
+define behavior for zi_rap_aro alias ARO
+implementation in class zbp_i_rap_aro unique
+//late numbering
+lock master
+etag master LastchangeDate
+{
+  create;
+  update;
+  delete;
+  association _Transaction { create; }
+
+  field ( readonly ) OblGuid;
+  field ( mandatory ) CompCode, OblDesc;
+
+mapping for aro_obligation //control zsrap_aro
+{
+CompCode = comp_code;
+Langu = langu;
+OblDesc = obl_desc;
+OblGuid = obl_guid;
+OblLock = obl_lock;
+OblMcoDesc = obl_mco_desc;
+OblNum = obl_num;
+OblShortDesc = obl_short_desc;
+OblStatus = obl_status;
+OblType = obl_type;
+	
+}
+
+
+}
+
+define behavior for zi_rap_transaction alias Transaction
+implementation in class zbp_i_rap_transaction unique
+
+//late numbering
+lock dependent by _ARO
+etag dependent by _ARO
+{
+  update;
+  delete;
+  association _ARO;
+
+  field ( readonly ) AroGuid, AroTaNum;
+  field ( mandatory ) TaDate,TaStatus;
+
+}

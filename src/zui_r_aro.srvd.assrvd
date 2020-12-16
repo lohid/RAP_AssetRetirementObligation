@@ -1,0 +1,6 @@
+@EndUserText.label: 'Aro'
+define service Zui_r_aro {
+  expose zc_r_aro;
+  expose zc_r_aro_ap;
+  expose zc_r_assignments;
+}
