@@ -48,8 +48,9 @@ define behavior for zi_aro_assignments alias assignment
 //  create;
   update;
   delete;
+  association _ARO;
 
-//  field ( readonly ) ObjUuid;
+  field ( readonly ) ObjUuid;
   field ( mandatory ) Costcenter;
 
 mapping for aro_assignments
@@ -93,8 +94,9 @@ define behavior for zi_aro_hdr_ap alias aro_ap
   update;
   delete;
 
-//  field ( readonly ) ApGuid,AroGuid;
+  field ( readonly ) AroGuid;
   field ( mandatory ) AccPr;
+ association _ARO;
 
 mapping for aro_hdr_ap
 {

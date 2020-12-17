@@ -89,35 +89,69 @@ CLASS lhc_zi_r_aro IMPLEMENTATION.
 
   METHOD rba_Aro_ap.
 
+    DATA ls_aro_ap     LIKE LINE OF result .
+
     LOOP AT keys_rba ASSIGNING FIELD-SYMBOL(<fs_aro_rba>) GROUP BY <fs_aro_rba>-oblguid.
 
-      SELECT  ApGuid  FROM zi_aro_hdr_ap WHERE aroguid = @<fs_aro_rba>-oblguid INTO @DATA(lv_ap_guid).
+*      SELECT  ApGuid  FROM zi_aro_hdr_ap WHERE aroguid = @<fs_aro_rba>-oblguid INTO @DATA(lv_ap_guid).
+
+
+      READ TABLE zcl_r_aro=>mt_aro INTO DATA(lo_aro)
+                                   WITH KEY table_line->mv_aro_guid = <fs_aro_rba>-oblguid.
+
+      DATA(lt_aro_ap) = lo_aro->get_aro_ap( ).
+
+*      DATA(lt_aro_guid) = lo_aro->get_ap_guid( ).
+*      LOOP AT lt_aro_guid INTO DATA(lv_aro_guid).
+      LOOP AT lt_aro_ap ASSIGNING FIELD-SYMBOL(<ls_aro_ap>).
+
+        ls_aro_ap = CORRESPONDING #( <ls_aro_ap> MAPPING TO ENTITY ).
+        INSERT ls_aro_ap INTO TABLE result.
 
         INSERT
           VALUE #(
             source-%key = <fs_aro_rba>-%key
-            target-%key = lv_ap_guid
+            target-%key = <ls_aro_ap>-ap_guid
           )
           INTO TABLE association_links.
-      ENDSELECT.
+      ENDLOOP.
+*      ENDLOOP.
+*      ENDSELECT.
     ENDLOOP.
 
   ENDMETHOD.
 
   METHOD rba_Assignments.
 
+    DATA ls_assignments     LIKE LINE OF result .
+
     LOOP AT keys_rba ASSIGNING FIELD-SYMBOL(<fs_aro_rba>) GROUP BY <fs_aro_rba>-oblguid.
 
-      SELECT  validto  FROM zi_aro_assignments WHERE objuuid = @<fs_aro_rba>-oblguid INTO @DATA(lv_validto).
+*      SELECT  validto  FROM zi_aro_assignments WHERE objuuid = @<fs_aro_rba>-oblguid INTO @DATA(lv_validto).
+
+      READ TABLE zcl_r_aro=>mt_aro INTO DATA(lo_aro)
+                                         WITH KEY table_line->mv_aro_guid = <fs_aro_rba>-oblguid.
+
+      DATA(lt_assignment) = lo_aro->get_assignments( ).
+      LOOP AT lt_assignment ASSIGNING FIELD-SYMBOL(<ls_assignments>).
+*      DATA(lt_validto) = lo_aro->get_assignment_validto( ).
+*      LOOP AT lt_validto INTO DATA(lv_validto).
+
+        ls_assignments = CORRESPONDING #( <ls_assignments> MAPPING TO ENTITY ).
+*            ls_booking-lastchangedat = ls_travel_out-lastchangedat.
+        INSERT ls_assignments INTO TABLE result.
 
         INSERT
           VALUE #(
             source-%key = <fs_aro_rba>-%key
-            target-%key = value #(  objuuid = <fs_aro_rba>-%key
-                                    validto =  lv_validto   )
+            target-%key = VALUE #(  objuuid = <fs_aro_rba>-%key
+                                    validto =  <ls_assignments>-validto   )
           )
           INTO TABLE association_links.
-      ENDSELECT.
+      ENDLOOP.
+*      ENDLOOP.
+*       result = va
+*      ENDSELECT.
     ENDLOOP.
 
   ENDMETHOD.
@@ -210,20 +244,37 @@ CLASS lhc_zi_aro_assignments DEFINITION INHERITING FROM cl_abap_behavior_handler
 
     METHODS read FOR READ
       IMPORTING keys FOR READ assignment RESULT result.
+    METHODS rba_aro FOR READ
+      IMPORTING keys_rba FOR READ assignment\_aro FULL result_requested RESULT result LINK association_links.
 
 ENDCLASS.
 
 CLASS lhc_zi_aro_assignments IMPLEMENTATION.
 
   METHOD update.
+*    data lv_test type i.
+*  lv_test = 1.
   ENDMETHOD.
 
   METHOD delete.
+*    data lv_test type i.
+*  lv_test = 1.
   ENDMETHOD.
 
   METHOD read.
+
+*  data lv_test type i.
+*  lv_test = 1.
+
   ENDMETHOD.
 
+
+  METHOD rba_Aro.
+
+*    data lv_test type i.
+*  lv_test = 1.
+
+  ENDMETHOD.
 
 ENDCLASS.
 
@@ -238,6 +289,8 @@ CLASS lhc_zi_aro_hdr_ap DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
     METHODS read FOR READ
       IMPORTING keys FOR READ aro_ap RESULT result.
+    METHODS rba_aro FOR READ
+      IMPORTING keys_rba FOR READ aro_ap\_aro FULL result_requested RESULT result LINK association_links.
 
 ENDCLASS.
 
@@ -258,15 +311,29 @@ CLASS lhc_zi_aro_hdr_ap IMPLEMENTATION.
 *
 *    ENDLOOP.
 
+  data lv_test type i.
+  lv_test = 1.
+
   ENDMETHOD.
 
   METHOD delete.
+    data lv_test type i.
+  lv_test = 1.
   ENDMETHOD.
 
   METHOD read.
+    data lv_test type i.
+  lv_test = 1.
   ENDMETHOD.
 
 
+
+  METHOD rba_Aro.
+
+      data lv_test type i.
+  lv_test = 1.
+
+  ENDMETHOD.
 
 ENDCLASS.
 

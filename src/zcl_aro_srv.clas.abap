@@ -65,22 +65,18 @@ CLASS zcl_aro_srv IMPLEMENTATION.
 
     "validate aro_main
 
-    ms_aro_main = is_aro_main.
+    "get uuid
     TRY.
-        ms_aro_main-obl_guid = cl_uuid_factory=>create_system_uuid( )->create_uuid_c32( ).
+        rv_aro_guid = cl_uuid_factory=>create_system_uuid( )->create_uuid_c32( ).
       CATCH cx_uuid_error.
         "handle exception
     ENDTRY.
 
 **INSERT aro_obligation FROM  ms_aro_main .
 ***********************************************************************
-    "get uuid
+
 *    TRY.
-    DATA(ev_aro_guid) =   ms_aro_main-obl_guid.
     DATA ev_obligation_number TYPE aro_obl_num.
-*      CATCH cx_uuid_error.
-*        "handle exception
-*    ENDTRY.
 
     "get obligation number
     CALL FUNCTION 'ARO_OBJ_NUMBER_DETERMINE'
@@ -90,7 +86,7 @@ CLASS zcl_aro_srv IMPLEMENTATION.
       IMPORTING
         e_obj_num = ev_obligation_number.
 
-    DATA(et_obligation)  = VALUE aro_tt_obligation( (  obl_guid = ev_aro_guid
+    DATA(et_obligation)  = VALUE aro_tt_obligation( (  obl_guid = rv_aro_guid
                                                  obl_type = is_aro_main-obl_type
                                                  comp_code =  is_aro_main-comp_code
                                                  obl_num  = ev_obligation_number
@@ -102,13 +98,13 @@ CLASS zcl_aro_srv IMPLEMENTATION.
                                                  obl_mco_desc = is_aro_main-obl_mco_desc
                                                         ) ).
 
-    DATA(et_obl_index)  = VALUE aro_tt_obl_index( (   obl_guid = ev_aro_guid
+    DATA(et_obl_index)  = VALUE aro_tt_obl_index( (   obl_guid = rv_aro_guid
                                                  obl_type = is_aro_main-obl_type
                                                  comp_code = is_aro_main-comp_code
                                                  obl_num  = ev_obligation_number
                                                         ) ).
 
-    DATA(et_aro_hdr)  = VALUE aro_tt_aro_hdr( (    aro_guid  =      ev_aro_guid
+    DATA(et_aro_hdr)  = VALUE aro_tt_aro_hdr( (    aro_guid  =      rv_aro_guid
                                              aro_date_beg  = is_aro_main-aro_date_beg
                                              aro_date_end    = COND #( WHEN is_aro_main-aro_date_end IS NOT INITIAL
                                                                         AND is_aro_main-aro_date_end <> space
@@ -138,17 +134,28 @@ CLASS zcl_aro_srv IMPLEMENTATION.
 *                                                  lastchange_orig
                                                     ) ).
 *
-*
-    INSERT aro_obligation FROM TABLE et_obligation.
-    INSERT aro_obl_index FROM TABLE et_obl_index.
-    INSERT aro_hdr FROM TABLE et_aro_hdr.
+
+    zcl_r_aro=>get_instance(
+      EXPORTING
+        iv_aro_guid = rv_aro_guid
+      IMPORTING
+        eo_aro      = DATA(lo_aro)
+    ).
+
+    lo_aro->insert_aro_obligation( it_obligation = et_obligation ).
+    lo_aro->insert_aro_index( it_aro_index = et_obl_index ).
+    lo_aro->insert_aro_hdr( it_aro_hdr = et_aro_hdr ).
+
+*    INSERT aro_obligation FROM TABLE et_obligation.
+*    INSERT aro_obl_index FROM TABLE et_obl_index.
+*    INSERT aro_hdr FROM TABLE et_aro_hdr.
 
 *    me->database_save( EXPORTING it_obligation  = et_obligation
 *                                 it_obl_index   = et_obl_index
 *                                 it_aro_hdr     = et_aro_hdr ).
 
 ****
-    rv_aro_guid =  ms_aro_main-obl_guid.
+*    rv_aro_guid =  ms_aro_main-obl_guid.
 
 
   ENDMETHOD.
@@ -187,22 +194,31 @@ CLASS zcl_aro_srv IMPLEMENTATION.
                                                 lastchgdtmps = '20201204135922'
                                                 lastchgdby = 'C5270360' ) ).
 
-    INSERT aro_assignments FROM  table  et_assignments.
+    zcl_r_aro=>get_instance(
+      EXPORTING
+        iv_aro_guid = is_assignment-obj_uuid
+      IMPORTING
+        eo_aro      = DATA(lo_aro)
+    ).
+
+    lo_aro->insert_assignments( it_assignments = et_assignments ).
+
+*    INSERT aro_assignments FROM  TABLE  et_assignments.
   ENDMETHOD.
 
 
   METHOD create_aro_ap.
     "validate accounting principle
-    DATA(ls_aro_ap) = is_aro_ap.
+*    DATA(ls_aro_ap) = is_aro_ap.
     TRY.
-        ls_aro_ap-ap_guid = cl_uuid_factory=>create_system_uuid( )->create_uuid_c32( ).
+        rv_aro_ap_guid = cl_uuid_factory=>create_system_uuid( )->create_uuid_c32( ).
       CATCH cx_uuid_error.
         "handle exception
     ENDTRY.
 
-    APPEND ls_aro_ap TO mt_aro_ap.
+*    APPEND ls_aro_ap TO mt_aro_ap.
 
-    DATA(lv_ap_guid) = ls_aro_ap-ap_guid.
+*    DATA(lv_ap_guid) = ls_aro_ap-ap_guid.
 
 *    TRY.
 *        ev_ap_ifrs_guid = cl_uuid_factory=>create_system_uuid( )->create_uuid_c32( ).
@@ -212,7 +228,7 @@ CLASS zcl_aro_srv IMPLEMENTATION.
 *      CATCH cx_uuid_error.
 *    "handle exception
 *    ENDTRY.
-    DATA(et_aro_hdr_ap)  = VALUE aro_tt_aro_hdr_ap( (  ap_guid = lv_ap_guid
+    DATA(et_aro_hdr_ap)  = VALUE aro_tt_aro_hdr_ap( (  ap_guid = rv_aro_ap_guid
                                                  aro_guid  = is_aro_ap-aro_guid
                                                  acc_pr = is_aro_ap-acc_pr
                                                  inf_rate_key = 'INF'
@@ -239,37 +255,59 @@ CLASS zcl_aro_srv IMPLEMENTATION.
 
 *
 **    me->database_save( EXPORTING it_aro_hdr_ap = et_aro_hdr_ap ).
-*
-*
-    INSERT aro_hdr_ap FROM TABLE et_aro_hdr_ap.
+    zcl_r_aro=>get_instance(
+      EXPORTING
+        iv_aro_guid = is_aro_ap-aro_guid
+      IMPORTING
+        eo_aro      = DATA(lo_aro)
+    ).
 
-    rv_aro_ap_guid = ls_aro_ap-ap_guid.
+lo_aro->insert_aro_ap( it_aro_ap = et_aro_hdr_ap ).
+*
+*    INSERT aro_hdr_ap FROM TABLE et_aro_hdr_ap.
+
+*    rv_aro_ap_guid = ls_aro_ap-ap_guid.
 
   ENDMETHOD.
 
   METHOD save.
 
-    IF ms_aro_main IS NOT INITIAL AND mt_aro_ap IS NOT INITIAL AND mt_assignment IS NOT INITIAL.
-      me->get_obligation_tables(  EXPORTING is_aro_main          = ms_aro_main
-                                            it_aro_accounting    = mt_aro_ap
-                                            it_aro_assignments   = mt_assignment
-                                  IMPORTING et_obligation        = DATA(lt_obligation)
-                                            et_obl_index         = DATA(lt_obl_index)
-                                            et_aro_hdr           = DATA(lt_aro_hdr)
-                                            et_aro_hdr_ap        = DATA(lt_aro_hdr_ap)
-                                            et_assignments       = DATA(lt_assignments)
-                                            ev_obligation_number = DATA(lv_obligation_number)
-                                            ev_aro_guid          = DATA(lv_aro_guid)
-                                            ev_ap_ifrs_guid      = DATA(lv_ap_ifrs_guid)
-                                            ev_ap_usg_guid       = DATA(lv_ap_usg_guid)  ).
+*    IF ms_aro_main IS NOT INITIAL AND mt_aro_ap IS NOT INITIAL AND mt_assignment IS NOT INITIAL.
+*      me->get_obligation_tables(  EXPORTING is_aro_main          = ms_aro_main
+*                                            it_aro_accounting    = mt_aro_ap
+*                                            it_aro_assignments   = mt_assignment
+*                                  IMPORTING et_obligation        = DATA(lt_obligation)
+*                                            et_obl_index         = DATA(lt_obl_index)
+*                                            et_aro_hdr           = DATA(lt_aro_hdr)
+*                                            et_aro_hdr_ap        = DATA(lt_aro_hdr_ap)
+*                                            et_assignments       = DATA(lt_assignments)
+*                                            ev_obligation_number = DATA(lv_obligation_number)
+*                                            ev_aro_guid          = DATA(lv_aro_guid)
+*                                            ev_ap_ifrs_guid      = DATA(lv_ap_ifrs_guid)
+*                                            ev_ap_usg_guid       = DATA(lv_ap_usg_guid)  ).
+*
+*      me->database_save( EXPORTING it_obligation  = lt_obligation
+*                                   it_obl_index   = lt_obl_index
+*                                   it_aro_hdr     = lt_aro_hdr
+*                                   it_aro_hdr_ap  = lt_aro_hdr_ap
+*                                   it_assignments = lt_assignments ).
 
-      me->database_save( EXPORTING it_obligation  = lt_obligation
-                                   it_obl_index   = lt_obl_index
-                                   it_aro_hdr     = lt_aro_hdr
-                                   it_aro_hdr_ap  = lt_aro_hdr_ap
-                                   it_assignments = lt_assignments ).
 
-    ENDIF.
+loop at zcl_r_aro=>mt_aro into data(lo_aro).
+
+lo_aro->save( ).
+
+ENDLOOP.
+*    zcl_r_aro=>get_instance(
+*      EXPORTING
+*        iv_aro_guid = is_aro_ap-aro_guid
+*      IMPORTING
+*        eo_aro      = DATA(lo_aro)
+*    ).
+*
+
+
+*    ENDIF.
   ENDMETHOD.
 
   METHOD finalize.
